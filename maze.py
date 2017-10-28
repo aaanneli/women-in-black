@@ -45,15 +45,14 @@ class Room:
       self.height = bottomRight[0] - topLeft[0]
       self.rect = pygame.Rect((self.topLeft[1]*TILE_WIDTH, self.topLeft[0]*TILE_HEIGHT), (self.width*TILE_WIDTH, self.height*TILE_HEIGHT))
       self.walls = []
-      #top walls
-      self.walls.append(pygame.Rect(self.topLeft[1] * TILE_WIDTH, self.topLeft[0] * TILE_HEIGHT ,self.width * TILE_WIDTH, WALL_WIDTH))
+     #top walls
+      self.walls.append(pygame.Rect(self.topLeft[1] * TILE_WIDTH, self.topLeft[0] * TILE_HEIGHT, self.width * TILE_WIDTH, WALL_WIDTH))
       #bottom walls
-      self.walls.append(pygame.Rect(self.topLeft[1] * TILE_WIDTH, (self.topLeft[0] + self.height) * TILE_WIDTH - WALL_WIDTH, self.width * TILE_HEIGHT ,WALL_WIDTH))
+      self.walls.append(pygame.Rect(self.topLeft[1] * TILE_WIDTH, self.bottomRight[0] * TILE_HEIGHT - WALL_WIDTH, self.width * TILE_WIDTH, WALL_WIDTH))
       #left walls
-      self.walls.append(pygame.Rect(self.topLeft[1] * TILE_WIDTH, self.topLeft[0] * TILE_HEIGHT, WALL_WIDTH, self.height * TILE_WIDTH))
+      self.walls.append(pygame.Rect(self.topLeft[1] * TILE_WIDTH, self.topLeft[0] * TILE_HEIGHT, WALL_WIDTH, self.height * TILE_HEIGHT))
       #Right Walls
-      self.walls.append(pygame.Rect((self.topLeft[1] + self.width) * TILE_WIDTH - WALL_WIDTH, self.topLeft[0] * TILE_HEIGHT, WALL_WIDTH, self.height * WALL_WIDTH))
-
+      self.walls.append(pygame.Rect(self.bottomRight[1] * TILE_WIDTH - WALL_WIDTH, self.topLeft[0] * TILE_HEIGHT, WALL_WIDTH, self.height * TILE_HEIGHT))
            
    def containsPoint(self, row, col):
       return self.topLeft[0] <= row and self.topLeft[1] <= col and self.bottomRight[0] >= row and self.bottomRight[1] >= col
