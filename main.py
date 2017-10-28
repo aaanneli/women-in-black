@@ -88,7 +88,6 @@ class MainGame():
                 self.portal = pygame.Rect(self.endRoom.rect.center[0] - TILE_WIDTH/4.0, self.endRoom.rect.center[1] - TILE_HEIGHT/4.0, TILE_WIDTH/2.0, TILE_HEIGHT/2.0)
                 pygame.draw.rect(self.screen, BLUE, self.portal)
             pygame.display.flip()
-            #self.areWeWinning()
 
         pygame.mixer.music.stop()
         endScene = True
@@ -160,6 +159,6 @@ class MainGame():
 
 if __name__ == '__main__':
     pygame.init()
-    pygame.display.set_caption("GUTS Hackathon")
+    pygame.display.set_caption("Woman in Black")
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     MainGame(screen).main()

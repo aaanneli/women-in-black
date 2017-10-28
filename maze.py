@@ -57,6 +57,9 @@ class Room:
    def containsPoint(self, row, col):
       return self.topLeft[0] <= row and self.topLeft[1] <= col and self.bottomRight[0] >= row and self.bottomRight[1] >= col
 
+   def containsCoordinate(self,x,y):
+      return self.topLeft[1] * TILE_WIDTH <= x <= self.bottomRight[1] * TILE_WIDTH and self.topLeft[0] * TILE_HEIGHT <= y <= self.bottomRight[0] * TILE_HEIGHT 
+
       
    def unhide(self):
       self.hidden = False

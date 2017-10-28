@@ -2,6 +2,7 @@ import pygame, sys
 from pygame.locals import *
 from player import *
 from constant import *
+from maze import *
 
 
 class Alien(pygame.sprite.Sprite):
@@ -22,6 +23,7 @@ class Alien(pygame.sprite.Sprite):
         self.height = ALIEN_HEIGHT
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.countStep = 0
+        self.room = None
 
     def walkUp(self):
         self.direction = UP
@@ -50,6 +52,8 @@ class Alien(pygame.sprite.Sprite):
 
     def update(self,dt,game):
         player2 = game.player2.rect
+        if not self.getActive(game.rooms):
+            return
         
         isWallCollide = False
         positionBetweenWall = ""
@@ -94,5 +98,16 @@ class Alien(pygame.sprite.Sprite):
                         self.walkUp()
         if self.rect.colliderect(game.player1.rect) or self.rect.colliderect(player2):
             game.isPlaying = False
+
+    def getActive(self,roomList):
+        if self.room is not None:
+            return not self.room.hidden
+        for room in roomList:
+            if room.containsCoordinate(self.rect.x, self.rect.y):
+                self.room = room
+                return not room.hidden
+        print("cant find room")
+        return False
+        
         
             
