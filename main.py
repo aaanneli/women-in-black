@@ -3,6 +3,8 @@ from pygame.locals import *
 from player import *
 from constant import *
 from key import *
+from alien import *
+import random as r
 
 class MainGame():
     def __init__(self,screen):
@@ -13,6 +15,10 @@ class MainGame():
         self.player1 = Player1(self.sprites)
         self.player2 = Player2(self.sprites)
         self.key = Key(self.sprites)
+        self.aliens = []
+        for i in range(1):
+            self.aliens.append(Alien(r.randint(0,SCREEN_WIDTH),\
+                                     r.randint(0,SCREEN_HEIGHT),self.sprites))
         
 
     def main(self):
