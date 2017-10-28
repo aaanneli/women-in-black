@@ -85,6 +85,9 @@ class Bullet(pygame.sprite.Sprite):
         if game is not None:
             for alien in game.aliens:
                 if self.rect.colliderect(alien.rect):
+                    killAlienSound = pygame.mixer.Sound("music/alien-dies.wav")
+                    killAlienSound.play()
+                    
                     game.aliens.remove(alien)
                     game.sprites.remove(alien)
                     self.kill()

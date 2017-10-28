@@ -7,8 +7,13 @@ from alien import *
 import random as r
 from maze import *
 
+
+
 class MainGame():
     def __init__(self,screen):
+
+        
+        
         self.screen = screen
         self.isMenu = True
         self.isPlaying = True
@@ -23,6 +28,9 @@ class MainGame():
         self.walls = []
         self.doors = []
         self.aliens = []
+        self.bg = pygame.image.load("pics/background.png")
+
+
                
 
     def main(self):
@@ -64,37 +72,53 @@ class MainGame():
             screen.fill(BLUE)
             pygame.display.flip()
             
-
+        pygame.mixer.music.load("music/arcade-music.wav")
+        pygame.mixer.music.play(-1)
+        
         self.isPlaying = True
         while self.isPlaying:
+            self.screen.blit(self.bg, (0, 0))
             dt = self.clock.tick(FPS)
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
                     sys.exit()
             self.sprites.update(dt/1000., self)           
-            screen.fill(WHITE)
             self.sprites.draw(self.screen)
             self.drawMaze(rooms, doors)
+
+
             if self.isWin:
                 self.portal = pygame.Rect(self.endRoom.rect.center[0] - TILE_WIDTH/4.0, self.endRoom.rect.center[1] - TILE_HEIGHT/4.0, TILE_WIDTH/2.0, TILE_HEIGHT/2.0)
                 pygame.draw.rect(self.screen, BLUE, self.portal)
             pygame.display.flip()
             self.areWeWinning()
 
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-        key = pygame.key.get_pressed()
+        pygame.mixer.music.stop()
+        endScene = True
         if self.isWin:
             color = GREEN
+            winSound = pygame.mixer.Sound("music/victory.wav")
+            winSound.play()
         else:
             color = RED
-        screen.fill(color)
-        pygame.display.flip()
 
-        pygame.time.wait(300)
+            loseSound = pygame.mixer.Sound("music/evil-laugh.wav")
+            gameOverSound = pygame.mixer.Sound("music/game-over.wav")
+            loseSound.play()
+            gameOverSound.play()
+        while endScene:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
+            key = pygame.key.get_pressed()
+            if key[pygame.K_SPACE]:
+                endScene = False
+            
+            screen.fill(color)
+            pygame.display.flip()
+
         pygame.quit()
         sys.exit()
 

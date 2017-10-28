@@ -57,6 +57,8 @@ class Katya(Player):
     firekey = (pygame.K_SPACE)
     
     recoiltime = 0.75
+
+    
     
     def __init__(self, *groups):
 
@@ -142,6 +144,9 @@ class Katya(Player):
         if (self.firestatus == 0.0):
             
             if key[self.firekey]:
+                shootSound = pygame.mixer.Sound("music/shoot.wav")
+                shootSound.play()
+                
                 self.firestatus = Katya.recoiltime # seconds until Katya can fire again
                 Bullet(self,game.sprites)
         self.firestatus -= 0.1
@@ -181,6 +186,9 @@ class Player2(Player):
             if self.rect.colliderect(door.rect):
                 if not door.open:
                     if self.has_key:
+                        openDoorSound = pygame.mixer.Sound("music/portal-open.wav")
+                        openDoorSound.play()
+                        
                         door.openDoor()
                         self.has_key = False
                         door.room1.hidden = False
@@ -225,6 +233,9 @@ class Player2(Player):
 
         for actualkey in game.keys:
             if self.rect.colliderect(actualkey.rect) and not self.has_key:
+                keyPickupSound = pygame.mixer.Sound("music/key-pickup.wav")
+                keyPickupSound.play()
+                
                 self.has_key = True
                 game.keys.remove(actualkey)
                 game.sprites.remove(actualkey)
