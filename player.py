@@ -87,7 +87,7 @@ class Katya(Player):
             if self.rect.colliderect(wall):
                 isWallCollide = True
                 positionBetweenWall += checkPositionBetweenWall(wall,self.rect)
-                break
+                
 
         isDoorCollide = False
         positionBetweeDoor = ""
@@ -96,7 +96,6 @@ class Katya(Player):
                 if (door.open):
                     isDoorCollide = True
                     positionBetweeDoor += checkPositionBetweenWall(door.rect,self.rect)
-                    break
         if key[pygame.K_w]:
             if (isWallCollide and "top" in positionBetweenWall):
                 if isDoorCollide and "top" in positionBetweeDoor or "below" in positionBetweeDoor:
@@ -174,7 +173,6 @@ class Player2(Player):
             if self.rect.colliderect(wall):
                 isWallCollide = True
                 positionBetweenWall += checkPositionBetweenWall(wall,self.rect)
-                break
 
         isDoorCollide = False
         positionBetweeDoor = ""
@@ -183,7 +181,6 @@ class Player2(Player):
                 if (door.open):
                     isDoorCollide = True
                     positionBetweeDoor += checkPositionBetweenWall(door.rect,self.rect)
-                    break
                 
         if key[pygame.K_UP]:
             if (isWallCollide and "top" in positionBetweenWall):
