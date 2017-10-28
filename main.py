@@ -10,6 +10,7 @@ from maze import *
 class MainGame():
     def __init__(self,screen):
         self.screen = screen
+        self.isMenu = True
         self.isPlaying = True
         self.clock = pygame.time.Clock()
         self.sprites = pygame.sprite.Group()
@@ -21,10 +22,7 @@ class MainGame():
         self.walls = []
         self.doors = []
         self.aliens = []
-        for i in range(10):
-            self.aliens.append(Alien(r.randint(0,SCREEN_WIDTH),\
-                                     r.randint(0,SCREEN_HEIGHT),self.sprites))
-        
+               
 
     def main(self):
         NUM_ROOMS = 7
@@ -53,16 +51,18 @@ class MainGame():
             rooms[i].hidden = False
             self.current_room = rooms[i]
         
+        for i in range(10):
+            self.aliens.append(Alien(r.randint(0,SCREEN_WIDTH),\
+                                     r.randint(0,SCREEN_HEIGHT),self.sprites))
 
-        isMenu = True
-        while isMenu:
+        while self.isMenu:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
                     sys.exit()
             key = pygame.key.get_pressed()
             if key[pygame.K_SPACE]:
-                isMenu = False
+                self.isMenu = False
                 pygame.time.wait(300)
             screen.fill(BLUE)
             pygame.display.flip()
@@ -82,6 +82,20 @@ class MainGame():
             portal = pygame.Rect(self.endRoom.rect.center[0] - TILE_WIDTH/4.0, self.endRoom.rect.center[1] - TILE_HEIGHT/4.0, TILE_WIDTH/2.0, TILE_HEIGHT/2.0)
             pygame.draw.rect(self.screen, BLUE, portal)
             pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+        key = pygame.key.get_pressed()
+        screen.fill(RED)
+        pygame.display.flip()
+
+        pygame.time.wait(300)
+        pygame.quit()
+        sys.exit()
+            
+            
 
      
     def drawMaze(self, rooms, doors):

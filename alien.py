@@ -49,8 +49,8 @@ class Alien(pygame.sprite.Sprite):
         self.index = (self.index + 1) % len(self.images[LEFT])
 
     def update(self,dt,game):
-        player1 = game.player1.rect
-        if getDistance(self.rect,player1) > ALIEN_SAFE_DISTANCE:
+        player2 = game.player2.rect
+        if getDistance(self.rect,player2) > ALIEN_SAFE_DISTANCE:
             if self.direction == UP:
                 self.walkUp()
             elif self.direction == LEFT:
@@ -64,8 +64,8 @@ class Alien(pygame.sprite.Sprite):
                 self.countStep = 0
                 self.direction = (self.direction + 1) % NUMBER_OF_DIRECTION
         else:
-            xDiff = player1.x - self.rect.x
-            yDiff = player1.y - self.rect.y
+            xDiff = player2.x - self.rect.x
+            yDiff = player2.y - self.rect.y
             if (abs(xDiff) > abs(yDiff)):
                 if xDiff > 0:
                     self.walkRight()
@@ -76,5 +76,5 @@ class Alien(pygame.sprite.Sprite):
                     self.walkDown()
                 else:
                     self.walkUp()
-        if self.rect.colliderect(player1):
-            pass        
+        if self.rect.colliderect(game.player1.rect) or self.rect.colliderect(player2):
+            game.isPlaying = False

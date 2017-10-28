@@ -15,8 +15,8 @@ class Player(pygame.sprite.Sprite):
         self.direction = RIGHT
         self.x = x
         self.y = y
-        self.width = 40
-        self.height = 60
+        self.width = CHARACTER_WIDTH
+        self.height = CHARACTER_HEIGHT
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.isMoving = False
         self.hasKey = False
@@ -66,10 +66,10 @@ class Katya(Player):
         self.angle = 0
         
         for i in range(3):
-            self.images[UP].append(pygame.image.load('pics/character_2/up'+str(i)+'.png'))
-            self.images[LEFT].append(pygame.image.load('pics/character_2/left'+str(i)+'.png'))
-            self.images[DOWN].append(pygame.image.load('pics/character_2/down'+str(i)+'.png'))
-            self.images[RIGHT].append(pygame.image.load('pics/character_2/right'+str(i)+'.png'))
+            self.images[UP].append(pygame.image.load('pics/character_1/up'+str(i)+'.png'))
+            self.images[LEFT].append(pygame.image.load('pics/character_1/left'+str(i)+'.png'))
+            self.images[DOWN].append(pygame.image.load('pics/character_1/down'+str(i)+'.png'))
+            self.images[RIGHT].append(pygame.image.load('pics/character_1/right'+str(i)+'.png'))
         self.image = self.images[DOWN][0]
 
         self.firekey = Katya.firekey
@@ -155,10 +155,10 @@ class Player2(Player):
     def __init__(self, *groups):
         super(Player2, self).__init__(20,20,*groups)
         for i in range(3):
-            self.images[UP].append(pygame.image.load('pics/character_1/up'+str(i)+'.png'))
-            self.images[LEFT].append(pygame.image.load('pics/character_1/left'+str(i)+'.png'))
-            self.images[DOWN].append(pygame.image.load('pics/character_1/down'+str(i)+'.png'))
-            self.images[RIGHT].append(pygame.image.load('pics/character_1/right'+str(i)+'.png'))
+            self.images[UP].append(pygame.image.load('pics/character_2/up'+str(i)+'.png'))
+            self.images[LEFT].append(pygame.image.load('pics/character_2/left'+str(i)+'.png'))
+            self.images[DOWN].append(pygame.image.load('pics/character_2/down'+str(i)+'.png'))
+            self.images[RIGHT].append(pygame.image.load('pics/character_2/right'+str(i)+'.png'))
         self.image = self.images[DOWN][0]
         self.has_key = False
 
@@ -189,21 +189,16 @@ class Player2(Player):
                     isDoorCollide = True
                     positionBetweeDoor += checkPostionBetweenRect(door.rect,self.rect)
 
-        for actualkey in game.keys:
-            if self.rect.colliderect(actualkey.rect) and not self.has_key:
-                self.has_key = True
-                game.sprites.remove(actualkey)
-                        
         if key[pygame.K_UP]:
             if (isWallCollide and "top" in positionBetweenWall):
-                if isDoorCollide and "top" in positionBetweeDoor or "below" in positionBetweeDoor:
+                if isDoorCollide:
                     pass
                 else:
                     return
             self.walkUp()
         if key[pygame.K_LEFT]:
             if (isWallCollide and "left" in positionBetweenWall):
-                if isDoorCollide and "left" in positionBetweeDoor:
+                if isDoorCollide and "left" in positionBetweeDoor :
                     pass
                 else:
                     return
@@ -223,7 +218,12 @@ class Player2(Player):
                     return
             self.walkRight()
 
-        print(self.has_key)
+        for actualkey in game.keys:
+            if self.rect.colliderect(actualkey.rect) and not self.has_key:
+                self.has_key = True
+                game.keys.remove(actualkey)
+                game.sprites.remove(actualkey)
+                        
 
 
         

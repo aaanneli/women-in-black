@@ -52,7 +52,7 @@ class Bullet(pygame.sprite.Sprite):
         # so that bullet spawns closer to tank muzzle
         #self.pos[0] +=  math.cos(degrees_to_radians(self.boss.turretAngle)) #* (Tank.side-20)
         #self.pos[1] +=  math.sin(degrees_to_radians(-self.boss.turretAngle))#* (Tank.side-20)
-        self.pos[0] = self.boss.rect.center[0]
+        self.pos[0] = self.boss.rect.center[0] - 10 
         self.pos[1] = self.boss.rect.center[1]
 
  
