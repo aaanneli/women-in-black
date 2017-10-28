@@ -5,6 +5,7 @@ from constant import *
 from key import *
 from alien import *
 import random as r
+from maze import *
 
 class MainGame():
     def __init__(self,screen):
@@ -22,6 +23,12 @@ class MainGame():
         
 
     def main(self):
+        NUM_ROOMS = 7
+        maze = Maze(NUM_GRID_ROWS, NUM_GRID_COLS, NUM_ROOMS)
+        rooms, doors = maze.createMaze()
+        rooms = sorted(rooms, key = lambda x: x.topLeft)
+        rooms[0].hidden = False
+
         self.isPlaying = True
         while self.isPlaying:
             dt = self.clock.tick(FPS)
@@ -32,9 +39,34 @@ class MainGame():
             self.sprites.update(dt/1000., self)           
             screen.fill(WHITE)
             self.sprites.draw(self.screen)
-            pygame.display.flip()
-     
+            self.drawMaze(rooms, doors)
 
+            pygame.display.flip()
+
+     
+    def drawMaze(self, rooms, doors):
+        tile_width = SCREEN_WIDTH*1.0/NUM_GRID_COLS
+        tile_height = SCREEN_HEIGHT*1.0/NUM_GRID_ROWS
+
+        for room in rooms:
+            w = 0 if room.hidden else WALL_WIDTH
+            x = room.topLeft[1]*tile_width
+            y = room.topLeft[0]*tile_height
+            pygame.draw.rect(screen, BLACK, pygame.Rect(x, y, room.width*tile_width, room.height*tile_height), w)
+
+
+        for door in doors:
+           if door.room1.hidden and door.room2.hidden:
+              continue
+           colour = GREEN if door.open else RED
+           x = door.col*tile_width
+           y = door.row*tile_height
+           offset = tile_height/4.0
+           if door.vertical:
+              pygame.draw.line(screen, colour, (x, y + offset), (x, y + tile_height - offset), DOOR_WIDTH)
+           else:
+              pygame.draw.line(screen, colour, (x + tile_width - offset, y), (x + offset, y), DOOR_WIDTH)
+          
 
 if __name__ == '__main__':
     pygame.init()
