@@ -192,6 +192,7 @@ class Player2(Player):
                         self.has_key = False
                         door.room1.hidden = False
                         door.room2.hidden = False
+                        game.areWeWinning()
                 elif (door.open):
                     isDoorCollide = True
                     positionBetweeDoor += checkPostionBetweenRect(door.rect,self.rect)
@@ -227,7 +228,7 @@ class Player2(Player):
 
         if (game.portal is not None):
             if self.rect.colliderect(game.portal):
-                if game.isWinning and self.has_key:
+                if game.isWinning and self.has_key and game.boss is None:
                     game.isWin = True
                     game.isPlaying = False
 

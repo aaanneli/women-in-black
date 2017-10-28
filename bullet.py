@@ -91,6 +91,19 @@ class Bullet(pygame.sprite.Sprite):
                     game.aliens.remove(alien)
                     game.sprites.remove(alien)
                     self.kill()
+        # ---- kill if hit boss --
+        if game is not None and game.boss is not None:
+            if self.rect.colliderect(game.boss):
+                self.kill()
+                killAlienSound = pygame.mixer.Sound("music/alien-dies.wav")
+                killAlienSound.play()
+                game.boss.life -= 1
+                if game.boss.life <= 0:
+                    print("fickin die")
+                    game.boss.kill()
+                    game.boss = None
+                    game.sprites.remove(game.boss)
+                
         #------- move -------
         self.rect.centerx = round(self.pos[0],0)
         self.rect.centery = round(self.pos[1],0)

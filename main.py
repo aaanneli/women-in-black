@@ -6,6 +6,7 @@ from key import *
 from alien import *
 import random as r
 from maze import *
+from boss import *
 
 
 
@@ -27,10 +28,10 @@ class MainGame():
         self.walls = []
         self.doors = []
         self.aliens = []
+        self.boss = None
         self.bg = pygame.image.load("pics/background.png")              
 
     def main(self):
-        NUM_ROOMS = 7
         maze = Maze(NUM_GRID_ROWS, NUM_GRID_COLS, NUM_ROOMS)
         rooms, doors = maze.createMaze()
         rooms = sorted(rooms, key = lambda x: x.topLeft)
@@ -87,7 +88,7 @@ class MainGame():
                 self.portal = pygame.Rect(self.endRoom.rect.center[0] - TILE_WIDTH/4.0, self.endRoom.rect.center[1] - TILE_HEIGHT/4.0, TILE_WIDTH/2.0, TILE_HEIGHT/2.0)
                 pygame.draw.rect(self.screen, BLUE, self.portal)
             pygame.display.flip()
-            self.areWeWinning()
+            #self.areWeWinning()
 
         pygame.mixer.music.stop()
         endScene = True
@@ -128,6 +129,7 @@ class MainGame():
             if not door.open:
                 return False
         self.isWinning = True
+        self.boss = Boss(self.endRoom.rect.center[0] - TILE_WIDTH/4.0, self.endRoom.rect.center[1] - TILE_HEIGHT/4.0,self.sprites)
         return True
             
 
