@@ -93,6 +93,6 @@ class Alien(pygame.sprite.Sprite):
                     if not (isWallCollide and "top" in positionBetweenWall):
                         self.walkUp()
         if self.rect.colliderect(game.player1.rect) or self.rect.colliderect(player2):
-            #game.isPlaying = False
-            pass
+            game.isPlaying = False
+        
             

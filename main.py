@@ -87,7 +87,11 @@ class MainGame():
                 pygame.quit()
                 sys.exit()
         key = pygame.key.get_pressed()
-        screen.fill(RED)
+        if self.isWin:
+            color = GREEN
+        else:
+            color = RED
+        screen.fill(color)
         pygame.display.flip()
 
         pygame.time.wait(300)
