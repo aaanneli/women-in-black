@@ -159,7 +159,7 @@ class Player2(Player):
             self.images[DOWN].append(pygame.image.load('pics/player1/down'+str(i)+'.png'))
             self.images[RIGHT].append(pygame.image.load('pics/player1/right'+str(i)+'.png'))
         self.image = self.images[DOWN][0]
-        self.hasKey = False
+        self.has_key = False
 
     def update(self,dt,game):
         key = pygame.key.get_pressed()
@@ -181,7 +181,12 @@ class Player2(Player):
                 if (door.open):
                     isDoorCollide = True
                     positionBetweeDoor += checkPositionBetweenWall(door.rect,self.rect)
-                
+
+        for actualkey in game.keys:
+            if self.rect.colliderect(actualkey.rect) and not self.has_key:
+                self.has_key = True
+                game.sprites.remove(actualkey)
+                        
         if key[pygame.K_UP]:
             if (isWallCollide and "top" in positionBetweenWall):
                 if isDoorCollide and "top" in positionBetweeDoor or "below" in positionBetweeDoor:
@@ -211,9 +216,9 @@ class Player2(Player):
                     return
             self.walkRight()
             
-        if self.rect.colliderect(game.key) and not self.has_key:
-            self.has_key = True
-            game.sprites.remove(game.key)
+##        if isKeyCollide and not self.has_key:
+##            self.has_key = True
+##            game.sprites.remove(game.key)
             
 
         

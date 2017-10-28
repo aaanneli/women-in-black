@@ -15,7 +15,7 @@ class MainGame():
         self.sprites = pygame.sprite.Group()
         self.player1 = Katya(self.sprites)
         self.player2 = Player2(self.sprites)
-        self.key = Key(self.sprites)
+        self.keys = [] #Key(self.sprites)
         self.rooms = []
         self.walls = []
         self.doors = []
@@ -33,15 +33,14 @@ class MainGame():
         self.rooms = rooms
         for room in rooms:
             self.walls += room.walls
+            self.keys += [Key(room, self.sprites)]
         for door in doors:
             self.doors.append(door)
         rooms[0].hidden = False
         # need to remove later
-        '''
         for i in range(len(rooms)):
             rooms[i].hidden = False
             self.current_room = rooms[i]
-        '''
 
         self.isPlaying = True
         while self.isPlaying:
@@ -69,10 +68,10 @@ class MainGame():
             pygame.draw.rect(screen, BLACK, pygame.Rect(x, y, room.width*tile_width, room.height*tile_height), w)
 
         for door in doors:
-            
+            '''
             if door.room1.hidden and door.room2.hidden:
               continue
-            
+            '''
             colour = GREEN if door.open else RED
             x = door.col*tile_width
             y = door.row*tile_height
