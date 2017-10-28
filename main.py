@@ -12,8 +12,6 @@ from maze import *
 class MainGame():
     def __init__(self,screen):
 
-        
-        
         self.screen = screen
         self.isMenu = True
         self.isPlaying = True
@@ -23,15 +21,13 @@ class MainGame():
         self.player2 = Player2(self.sprites)
         self.keys = [] #Key(self.sprites)
         self.isWin = False
+        self.isWinning = False
         self.portal = None
         self.rooms = []
         self.walls = []
         self.doors = []
         self.aliens = []
-        self.bg = pygame.image.load("pics/background.png")
-
-
-               
+        self.bg = pygame.image.load("pics/background.png")              
 
     def main(self):
         NUM_ROOMS = 7
@@ -86,7 +82,9 @@ class MainGame():
             self.sprites.update(dt/1000., self)           
             self.sprites.draw(self.screen)
             self.drawMaze(rooms, doors)
-            if self.isWin:
+            if self.player2.has_key:
+                pygame.draw.rect(self.screen, YELLOW, pygame.Rect(self.player2.rect.x, self.player2.rect.y - 10, self.player2.width, 10))
+            if self.isWinning :
                 self.portal = pygame.Rect(self.endRoom.rect.center[0] - TILE_WIDTH/4.0, self.endRoom.rect.center[1] - TILE_HEIGHT/4.0, TILE_WIDTH/2.0, TILE_HEIGHT/2.0)
                 pygame.draw.rect(self.screen, BLUE, self.portal)
             pygame.display.flip()
@@ -94,17 +92,22 @@ class MainGame():
 
         pygame.mixer.music.stop()
         endScene = True
+        endText = ""
         if self.isWin:
+            endText = "YOU WIN!"
             color = GREEN
             winSound = pygame.mixer.Sound("music/victory.wav")
             winSound.play()
         else:
+            endText = "YOU LOSE!"
             color = RED
-
             loseSound = pygame.mixer.Sound("music/evil-laugh.wav")
             gameOverSound = pygame.mixer.Sound("music/game-over.wav")
             loseSound.play()
             gameOverSound.play()
+            
+        myfont = pygame.font.SysFont('Comic Sans MS', 72)
+        endTextSurface = myfont.render(endText,False,BLACK)
         while endScene:
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -115,8 +118,9 @@ class MainGame():
                 endScene = False
             
             screen.fill(color)
+            self.screen.blit(endTextSurface,(SCREEN_WIDTH * 0.33 , SCREEN_HEIGHT * 0.33))
             pygame.display.flip()
-
+            
         pygame.quit()
         sys.exit()
 
@@ -124,7 +128,7 @@ class MainGame():
         for door in self.doors:
             if not door.open:
                 return False
-        self.isWin = True
+        self.isWinning = True
         return True
             
 

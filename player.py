@@ -227,7 +227,8 @@ class Player2(Player):
 
         if (game.portal is not None):
             if self.rect.colliderect(game.portal):
-                if game.isWin and self.has_key:
+                if game.isWinning and self.has_key:
+                    game.isWin = True
                     game.isPlaying = False
 
         for actualkey in game.keys:
