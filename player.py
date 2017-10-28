@@ -179,9 +179,14 @@ class Player2(Player):
         positionBetweeDoor = ""
         for door in game.doors:
             if self.rect.colliderect(door.rect):
+                if self.has_key:
+                    door.openDoor()
+                    self.has_key = False
                 if (door.open):
                     isDoorCollide = True
                     positionBetweeDoor += checkPositionBetweenWall(door.rect,self.rect)
+
+
 
         for actualkey in game.keys:
             if self.rect.colliderect(actualkey.rect) and not self.has_key:
