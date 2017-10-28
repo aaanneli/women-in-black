@@ -9,7 +9,7 @@ class Key(pygame.sprite.Sprite):
         self.index = 0
         self.x = 100
         self.y = 100
-        self.width = 2
-        self.height = 2
+        self.width = 30
+        self.height = 30
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
