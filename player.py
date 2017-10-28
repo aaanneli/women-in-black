@@ -96,7 +96,7 @@ class Katya(Player):
             if self.rect.colliderect(door.rect):
                 if (door.open):
                     isDoorCollide = True
-                    positionBetweeDoor += checkPositionBetweenWall(door.rect,self.rect)
+                    positionBetweeDoor += checkPostionBetweenRect(door.rect,self.rect)
         if key[pygame.K_w]:
             if (isWallCollide and "top" in positionBetweenWall):
                 if isDoorCollide and "top" in positionBetweeDoor or "below" in positionBetweeDoor:
@@ -179,14 +179,15 @@ class Player2(Player):
         positionBetweeDoor = ""
         for door in game.doors:
             if self.rect.colliderect(door.rect):
-                if self.has_key:
-                    door.openDoor()
-                    self.has_key = False
-                if (door.open):
+                if not door.open:
+                    if self.has_key:
+                        door.openDoor()
+                        self.has_key = False
+                        door.room1.hidden = False
+                        door.room2.hidden = False
+                elif (door.open):
                     isDoorCollide = True
-                    positionBetweeDoor += checkPositionBetweenWall(door.rect,self.rect)
-
-
+                    positionBetweeDoor += checkPostionBetweenRect(door.rect,self.rect)
 
         for actualkey in game.keys:
             if self.rect.colliderect(actualkey.rect) and not self.has_key:
@@ -221,6 +222,8 @@ class Player2(Player):
                 else:
                     return
             self.walkRight()
+
+        print(self.has_key)
 
 
         

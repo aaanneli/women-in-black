@@ -48,9 +48,25 @@ class MainGame():
             
         self.startRoom.hidden = False
         # need to remove later
+        
         for i in range(len(rooms)):
             rooms[i].hidden = False
             self.current_room = rooms[i]
+        
+
+        isMenu = True
+        while isMenu:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
+            key = pygame.key.get_pressed()
+            if key[pygame.K_SPACE]:
+                isMenu = False
+                pygame.time.wait(300)
+            screen.fill(BLUE)
+            pygame.display.flip()
+            
 
         self.isPlaying = True
         while self.isPlaying:
