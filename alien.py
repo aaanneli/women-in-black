@@ -50,15 +50,27 @@ class Alien(pygame.sprite.Sprite):
 
     def update(self,dt,game):
         player2 = game.player2.rect
+        
+        isWallCollide = False
+        positionBetweenWall = ""
+        for wall in game.walls:
+            if self.rect.colliderect(wall):
+                isWallCollide = True
+                positionBetweenWall += checkPositionBetweenWall(wall,self.rect)
+
         if getDistance(self.rect,player2) > ALIEN_SAFE_DISTANCE:
             if self.direction == UP:
-                self.walkUp()
+                if not (isWallCollide and "top" in positionBetweenWall):
+                    self.walkUp()
             elif self.direction == LEFT:
-                self.walkLeft()
+                if not (isWallCollide and "left" in positionBetweenWall):
+                    self.walkLeft()
             elif self.direction == RIGHT:
-                self.walkRight()
+                if not (isWallCollide and "right" in positionBetweenWall):
+                    self.walkRight()
             elif self.direction == DOWN:
-                self.walkDown()
+                if not (isWallCollide and "below" in positionBetweenWall):
+                    self.walkDown()
             self.countStep += 1
             if(self.countStep > ALIEN_RANDOM_STEP):
                 self.countStep = 0
@@ -68,13 +80,19 @@ class Alien(pygame.sprite.Sprite):
             yDiff = player2.y - self.rect.y
             if (abs(xDiff) > abs(yDiff)):
                 if xDiff > 0:
-                    self.walkRight()
+                    if not (isWallCollide and "right" in positionBetweenWall):
+                        self.walkRight()
                 else:
-                    self.walkLeft()
+                    if not (isWallCollide and "left" in positionBetweenWall):
+                        self.walkLeft()
             else:
                 if yDiff > 0:
-                    self.walkDown()
+                    if not (isWallCollide and "below" in positionBetweenWall):
+                        self.walkDown()
                 else:
-                    self.walkUp()
+                    if not (isWallCollide and "top" in positionBetweenWall):
+                        self.walkUp()
         if self.rect.colliderect(game.player1.rect) or self.rect.colliderect(player2):
-            game.isPlaying = False
+            #game.isPlaying = False
+            pass
+            

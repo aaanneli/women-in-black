@@ -218,6 +218,11 @@ class Player2(Player):
                     return
             self.walkRight()
 
+        if (game.portal is not None):
+            if self.rect.colliderect(game.portal):
+                if game.isWin and self.has_key:
+                    game.isPlaying = False
+
         for actualkey in game.keys:
             if self.rect.colliderect(actualkey.rect) and not self.has_key:
                 self.has_key = True

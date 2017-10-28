@@ -17,7 +17,8 @@ class MainGame():
         self.player1 = Katya(self.sprites)
         self.player2 = Player2(self.sprites)
         self.keys = [] #Key(self.sprites)
-
+        self.isWin = False
+        self.portal = None
         self.rooms = []
         self.walls = []
         self.doors = []
@@ -31,12 +32,8 @@ class MainGame():
         rooms = sorted(rooms, key = lambda x: x.topLeft)
         self.rooms = rooms
 
-        for door in doors:
-            print door.row, door.col, door.room1.topLeft, door.room2.topLeft
-
-        
         self.startRoom = rooms[0];
-        endRoomIndex = randint(math.floor(3.0*NUM_ROOMS/4), NUM_ROOMS-1);
+        endRoomIndex = randint(0, NUM_ROOMS-1);
 
         
         self.endRoom = rooms[endRoomIndex]
@@ -49,18 +46,11 @@ class MainGame():
 
             
         self.startRoom.hidden = False
-        # need to remove later
-        '''
-        for i in range(len(rooms)):
-            rooms[i].hidden = False
-            self.current_room = rooms[i]
-        '''
+        
         
         for i in range(10):
             self.aliens.append(Alien(r.randint(0,SCREEN_WIDTH),\
                                      r.randint(0,SCREEN_HEIGHT),self.sprites))
-        
-    
 
         while self.isMenu:
             for event in pygame.event.get():
@@ -86,10 +76,11 @@ class MainGame():
             screen.fill(WHITE)
             self.sprites.draw(self.screen)
             self.drawMaze(rooms, doors)
-            portal = pygame.Rect(self.endRoom.rect.center[0] - TILE_WIDTH/4.0, self.endRoom.rect.center[1] - TILE_HEIGHT/4.0, TILE_WIDTH/2.0, TILE_HEIGHT/2.0)
-            pygame.draw.rect(self.screen, BLUE, portal)
+            if self.isWin:
+                self.portal = pygame.Rect(self.endRoom.rect.center[0] - TILE_WIDTH/4.0, self.endRoom.rect.center[1] - TILE_HEIGHT/4.0, TILE_WIDTH/2.0, TILE_HEIGHT/2.0)
+                pygame.draw.rect(self.screen, BLUE, self.portal)
             pygame.display.flip()
-        
+            self.areWeWinning()
 
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -102,7 +93,13 @@ class MainGame():
         pygame.time.wait(300)
         pygame.quit()
         sys.exit()
-            
+
+    def areWeWinning(self):
+        for door in self.doors:
+            if not door.open:
+                return False
+        self.isWin = True
+        return True
             
 
      
