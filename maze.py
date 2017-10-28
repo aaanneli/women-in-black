@@ -53,8 +53,11 @@ class Room:
       self.walls.append(pygame.Rect(self.topLeft[1] * TILE_WIDTH, self.topLeft[0] * TILE_HEIGHT, WALL_WIDTH, self.height * TILE_WIDTH))
       #Right Walls
       self.walls.append(pygame.Rect((self.topLeft[1] + self.width) * TILE_WIDTH - WALL_WIDTH, self.topLeft[0] * TILE_HEIGHT, WALL_WIDTH, self.height * WALL_WIDTH))
+
            
-       
+   def containsPoint(self, row, col):
+      return self.topLeft[0] <= row and self.topLeft[1] <= col and self.bottomRight[0] >= row and self.bottomRight[1] >= col
+
       
    def unhide(self):
       self.hidden = False
@@ -73,7 +76,7 @@ class Maze:
       column = randint(room.topLeft[1]+1, room.bottomRight[1]-1)
       room1 = Room(room.topLeft, (room.bottomRight[0], column))
       room2 = Room((room.topLeft[0], column), room.bottomRight)
-      door = Door(randint(room.topLeft[0], room.bottomRight[0]-1), column, True, room1, room2)
+      door = Door(randint(room.topLeft[0], room.bottomRight[0]-1), column, True, None, None)
       return room1, room2, door
 
 
@@ -81,7 +84,7 @@ class Maze:
       row = randint(room.topLeft[0]+1, room.bottomRight[0]-1)
       room1 = Room(room.topLeft, (row, room.bottomRight[1]))
       room2 = Room((row, room.topLeft[1]), room.bottomRight)
-      door = Door(row, randint(room.topLeft[1], room.bottomRight[1]-1), False, room1, room2)
+      door = Door(row, randint(room.topLeft[1], room.bottomRight[1]-1), False, None, None)
       return room1, room2, door
    
  
@@ -102,11 +105,6 @@ class Maze:
                room1, room2, door = self.createVerticalWall(room)
                rooms.put(room1)
                rooms.put(room2)
-               for d in doors:
-                  if d.room1 == room:
-                     d.room1 = room1
-                  if d.room2 == room:
-                     d.room2 = room2
                doors += [door]
          else:
             if room.height <= 3:
@@ -115,17 +113,42 @@ class Maze:
                room1, room2, door = self.createHorizontalWall(room)
                rooms.put(room1)
                rooms.put(room2)
-               for d in doors:
-                  if d.room1 == room:
-                     d.room1 = room1
-                  if d.room2 == room:
-                     d.room2 = room2
                doors += [door]
                
          i += 1
 
-      return list(rooms.queue), doors
+      self.rooms = list(rooms.queue)
+      for room in self.rooms:
+         print room.topLeft, room.bottomRight
+         
+      for door in doors:
+         print door.row, door.col
+         self.findRooms(door)
+         
+      return self.rooms, doors
 
+   
+   def findRooms(self, door):
+      drow = 0
+      dcol = 0
+
+      if door.vertical:
+         drow = 1
+         dcol = 0
+      else:
+         drow = 0
+         dcol = 1
+      
+         
+      for room in self.rooms:
+         if room.containsPoint(door.row, door.col) and room.containsPoint(door.row + drow, door.col + dcol):
+            if door.room1 == None:
+               door.room1 = room
+            else:
+               door.room2 = room
+               break
+            
+      print door.room1.topLeft, door.room2.topLeft
 
 
 

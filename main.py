@@ -31,6 +31,10 @@ class MainGame():
         rooms = sorted(rooms, key = lambda x: x.topLeft)
         self.rooms = rooms
 
+        for door in doors:
+            print door.row, door.col, door.room1.topLeft, door.room2.topLeft
+
+        
         self.startRoom = rooms[0];
         endRoomIndex = randint(math.floor(3.0*NUM_ROOMS/4), NUM_ROOMS-1);
 
@@ -46,14 +50,17 @@ class MainGame():
             
         self.startRoom.hidden = False
         # need to remove later
-        
+        '''
         for i in range(len(rooms)):
             rooms[i].hidden = False
             self.current_room = rooms[i]
+        '''
         
         for i in range(10):
             self.aliens.append(Alien(r.randint(0,SCREEN_WIDTH),\
                                      r.randint(0,SCREEN_HEIGHT),self.sprites))
+        
+    
 
         while self.isMenu:
             for event in pygame.event.get():
@@ -82,6 +89,7 @@ class MainGame():
             portal = pygame.Rect(self.endRoom.rect.center[0] - TILE_WIDTH/4.0, self.endRoom.rect.center[1] - TILE_HEIGHT/4.0, TILE_WIDTH/2.0, TILE_HEIGHT/2.0)
             pygame.draw.rect(self.screen, BLUE, portal)
             pygame.display.flip()
+        
 
         for event in pygame.event.get():
             if event.type == QUIT:
