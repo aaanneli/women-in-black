@@ -16,6 +16,8 @@ class MainGame():
         self.player1 = Player1(self.sprites)
         self.player2 = Player2(self.sprites)
         self.key = Key(self.sprites)
+        self.rooms = []
+        self.walls = []
         self.aliens = []
         for i in range(1):
             self.aliens.append(Alien(r.randint(0,SCREEN_WIDTH),\
@@ -27,7 +29,14 @@ class MainGame():
         maze = Maze(NUM_GRID_ROWS, NUM_GRID_COLS, NUM_ROOMS)
         rooms, doors = maze.createMaze()
         rooms = sorted(rooms, key = lambda x: x.topLeft)
+        self.rooms = rooms
+        for room in rooms:
+            self.walls += room.walls
         rooms[0].hidden = False
+        # need to remove later
+        for i in range(len(rooms)):
+            rooms[i].hidden = False
+            self.current_room = rooms[i]
 
         self.isPlaying = True
         while self.isPlaying:

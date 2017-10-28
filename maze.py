@@ -1,6 +1,7 @@
 # Class to produce random map layouts
 from random import *
 from Queue import *
+from constant import *
 import pygame
 
 
@@ -12,6 +13,19 @@ class Door:
       self.vertical = vertical
       self.room1 = room1
       self.room2 = room2
+      x = col * TILE_WIDTH
+      y = row * TILE_HEIGHT
+      if vertical:
+         realX = x
+         realY = x + DOOR_OFFSET
+         realWidth = x
+         realHeight = y + TILE_HEIGHT - DOOR_OFFSET
+      else:
+         realX = x + TILE_WIDTH - DOOR_OFFSET
+         realY = y
+         realWidth = x + DOOR_OFFSET
+         realHeight = y
+      self.rect = pygame.Rect(realX, realY,realWidth,realHeight)
 
 
    def openDoor(self):
@@ -29,7 +43,16 @@ class Room:
       self.hidden = True
       self.width = bottomRight[1] - topLeft[1] 
       self.height = bottomRight[0] - topLeft[0]
-      self.doors = []
+      self.rect = pygame.Rect(self.topLeft,(self.width,self.height))
+      self.walls = []
+      #top walls
+      self.walls.append(pygame.Rect(self.topLeft[1] * TILE_WIDTH, self.topLeft[0] * TILE_HEIGHT ,self.width * TILE_WIDTH, WALL_WIDTH))
+      #bottom walls
+      self.walls.append(pygame.Rect(self.topLeft[1] * TILE_WIDTH, (self.topLeft[0] + self.height) * TILE_WIDTH - WALL_WIDTH, self.width * TILE_HEIGHT ,WALL_WIDTH))
+      #left walls
+      self.walls.append(pygame.Rect(self.topLeft[1] * TILE_WIDTH, self.topLeft[0] * TILE_HEIGHT, WALL_WIDTH, self.height * TILE_WIDTH))
+      #Right Walls
+      self.walls.append(pygame.Rect((self.topLeft[1] + self.width) * TILE_WIDTH - WALL_WIDTH, self.topLeft[0] * TILE_HEIGHT, WALL_WIDTH, self.height * WALL_WIDTH))
 
       
    def unhide(self):

@@ -2,6 +2,7 @@ import pygame, sys
 from pygame.locals import *
 from constant import *
 from key import *
+from maze import *
 
 
 class Player(pygame.sprite.Sprite):
@@ -50,7 +51,7 @@ class Player(pygame.sprite.Sprite):
 
 class Player1(Player):
     def __init__(self, *groups):
-        super(Player1, self).__init__(400,400,*groups)
+        super(Player1, self).__init__(10,10,*groups)
         for i in range(9):
             self.images[UP].append(pygame.image.load('pics/player1/up'+str(i)+'.png'))
             self.images[LEFT].append(pygame.image.load('pics/player1/left'+str(i)+'.png'))
@@ -82,7 +83,7 @@ class Player1(Player):
 
 class Player2(Player):
     def __init__(self, *groups):
-        super(Player2, self).__init__(200,200,*groups)
+        super(Player2, self).__init__(20,20,*groups)
         for i in range(9):
             self.images[UP].append(pygame.image.load('pics/player1/up'+str(i)+'.png'))
             self.images[LEFT].append(pygame.image.load('pics/player1/left'+str(i)+'.png'))
@@ -93,29 +94,40 @@ class Player2(Player):
 
     def update(self,dt,game):
         key = pygame.key.get_pressed()
+        
         isPlayerCollide = self.rect.colliderect(game.player1.rect)
         positionBetween = checkPostionBetweenRect(game.player1.rect,self.rect)
+
+        isWallCollide = False
+        positionBetweenWall = ""
+        for wall in game.walls:
+            if self.rect.colliderect(wall):
+                isWallCollide = True
+                positionBetweenWall += checkPostionBetweenRect(wall,self.rect)
+                break
         
         if key[pygame.K_UP]:
-            if(isPlayerCollide and "top" in positionBetween):
+            if(isPlayerCollide and "top" in positionBetween) or (isWallCollide and "top" in positionBetweenWall):
                 return
             self.walkUp()
         if key[pygame.K_LEFT]:
-            if(isPlayerCollide and "left" in positionBetween):
+            if(isPlayerCollide and "left" in positionBetween) or (isWallCollide and "left" in positionBetweenWall):
                 return
             self.walkLeft()
         if key[pygame.K_DOWN]:
-            if(isPlayerCollide and "below" in positionBetween):
+            if(isPlayerCollide and "below" in positionBetween) or (isWallCollide and "below" in positionBetweenWall):
                 return
             self.walkDown()
         if key[pygame.K_RIGHT]:
-            if(isPlayerCollide and "right" in positionBetween):
+            if(isPlayerCollide and "right" in positionBetween) or (isWallCollide and "right" in positionBetweenWall):
                 return
             self.walkRight()
             
         if self.rect.colliderect(game.key) and not self.has_key:
             self.has_key = True
             game.sprites.remove(game.key)
+            
+    
 
 
     
