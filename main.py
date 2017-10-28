@@ -20,7 +20,7 @@ class MainGame():
         self.walls = []
         self.doors = []
         self.aliens = []
-        for i in range(1):
+        for i in range(10):
             self.aliens.append(Alien(r.randint(0,SCREEN_WIDTH),\
                                      r.randint(0,SCREEN_HEIGHT),self.sprites))
         

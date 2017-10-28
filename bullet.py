@@ -74,6 +74,19 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
         elif self.pos[1] > SCREEN_HEIGHT:
             self.kill()
+
+        # --------kill if hit wall ---
+        if game is not None:
+            for wall in game.walls:
+                if self.rect.colliderect(wall):
+                    self.kill()
+
+        # ----- kill if kill alien --
+        if game is not None:
+            for alien in game.aliens:
+                if self.rect.colliderect(alien.rect):
+                    game.sprites.remove(alien)
+                    self.kill()
         #------- move -------
         self.rect.centerx = round(self.pos[0],0)
         self.rect.centery = round(self.pos[1],0)
