@@ -82,8 +82,7 @@ class MainGame():
             self.sprites.update(dt/1000., self)           
             self.sprites.draw(self.screen)
             self.drawMaze(rooms, doors)
-            if self.player2.has_key:
-                pygame.draw.rect(self.screen, YELLOW, pygame.Rect(self.player2.rect.x, self.player2.rect.y - 10, self.player2.width, 10))
+            
             if self.isWinning :
                 self.portal = pygame.Rect(self.endRoom.rect.center[0] - TILE_WIDTH/4.0, self.endRoom.rect.center[1] - TILE_HEIGHT/4.0, TILE_WIDTH/2.0, TILE_HEIGHT/2.0)
                 pygame.draw.rect(self.screen, BLUE, self.portal)

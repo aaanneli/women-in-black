@@ -239,6 +239,9 @@ class Player2(Player):
                 self.has_key = True
                 game.keys.remove(actualkey)
                 game.sprites.remove(actualkey)
+                
+        if self.has_key:
+                pygame.draw.rect(game.screen, YELLOW, pygame.Rect(self.rect.x, self.rect.y - 10, self.width, 10))
                         
 
 
