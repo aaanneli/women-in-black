@@ -30,7 +30,7 @@ class MainGame():
                     pygame.quit()
                     sys.exit()
             self.sprites.update(dt/1000., self)           
-            screen.fill(BLACK)
+            screen.fill(WHITE)
             self.sprites.draw(self.screen)
             pygame.display.flip()
      
