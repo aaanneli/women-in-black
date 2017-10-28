@@ -16,15 +16,15 @@ class Door:
       x = col * TILE_WIDTH
       y = row * TILE_HEIGHT
       if vertical:
-         realX = x
-         realY = x + DOOR_OFFSET
-         realWidth = x
-         realHeight = y + TILE_HEIGHT - DOOR_OFFSET
+         realX = x - 0.25
+         realY = y + DOOR_OFFSET
+         realWidth = DOOR_WIDTH
+         realHeight = TILE_HEIGHT / 2.0
       else:
-         realX = x + TILE_WIDTH - DOOR_OFFSET
-         realY = y
-         realWidth = x + DOOR_OFFSET
-         realHeight = y
+         realX = x + DOOR_OFFSET
+         realY = y - 0.25
+         realWidth = TILE_WIDTH / 2.0
+         realHeight = DOOR_WIDTH
       self.rect = pygame.Rect(realX, realY,realWidth,realHeight)
 
 

@@ -18,6 +18,7 @@ class MainGame():
         self.key = Key(self.sprites)
         self.rooms = []
         self.walls = []
+        self.doors = []
         self.aliens = []
         for i in range(1):
             self.aliens.append(Alien(r.randint(0,SCREEN_WIDTH),\
@@ -32,6 +33,8 @@ class MainGame():
         self.rooms = rooms
         for room in rooms:
             self.walls += room.walls
+        for door in doors:
+            self.doors.append(door)
         rooms[0].hidden = False
         # need to remove later
         for i in range(len(rooms)):
@@ -63,17 +66,18 @@ class MainGame():
             y = room.topLeft[0]*tile_height
             pygame.draw.rect(screen, BLACK, pygame.Rect(x, y, room.width*tile_width, room.height*tile_height), w)
 
-
         for door in doors:
-           if door.room1.hidden and door.room2.hidden:
+            '''
+            if door.room1.hidden and door.room2.hidden:
               continue
-           colour = GREEN if door.open else RED
-           x = door.col*tile_width
-           y = door.row*tile_height
-           offset = tile_height/4.0
-           if door.vertical:
+            '''
+            colour = GREEN if door.open else RED
+            x = door.col*tile_width
+            y = door.row*tile_height
+            offset = tile_height/4.0
+            if door.vertical:
               pygame.draw.line(screen, colour, (x, y + offset), (x, y + tile_height - offset), DOOR_WIDTH)
-           else:
+            else:
               pygame.draw.line(screen, colour, (x + tile_width - offset, y), (x + offset, y), DOOR_WIDTH)
           
 
