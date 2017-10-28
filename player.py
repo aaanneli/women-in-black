@@ -3,12 +3,14 @@ from pygame.locals import *
 from constant import *
 from key import *
 from maze import *
+from bullet import *
+from math import *
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y, *groups):
         super(Player, self).__init__(*groups)
-        self.images = [[] for i in range(NUMBER_OF_DIRECTION)]
+        self.images = [[] for i in range(4)]
         self.index = 0
         self.direction = RIGHT
         self.x = x
@@ -16,6 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.width = 40
         self.height = 60
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.isMoving = False
 
     def update(self,dt,game):
         pass
@@ -49,15 +52,28 @@ class Player(pygame.sprite.Sprite):
         pass
 
 
-class Player1(Player):
+class Katya(Player):
+    firekey = (pygame.K_SPACE)
+    
+    recoiltime = 0.75
+    
     def __init__(self, *groups):
-        super(Player1, self).__init__(10,10,*groups)
+
+        super(Katya, self).__init__(100,100,*groups)
+
+        self.pos = [self.x,self.y]
+        self.angle = 0
+        
         for i in range(9):
             self.images[UP].append(pygame.image.load('pics/player1/up'+str(i)+'.png'))
             self.images[LEFT].append(pygame.image.load('pics/player1/left'+str(i)+'.png'))
             self.images[DOWN].append(pygame.image.load('pics/player1/down'+str(i)+'.png'))
             self.images[RIGHT].append(pygame.image.load('pics/player1/right'+str(i)+'.png'))
         self.image = self.images[DOWN][0]
+
+        self.firekey = Katya.firekey
+        self.firestatus = 0.0
+        self.rect = pygame.Rect(self.x,self.y,60,60)
 
     def update(self,dt,game):
         key = pygame.key.get_pressed()
@@ -87,28 +103,53 @@ class Player1(Player):
                     pass
                 else:
                     return
+        if key[pygame.K_w]:
+            self.isMoving = True
             self.walkUp()
+            self.angle = math.pi * 3 / 2
         if key[pygame.K_a]:
             if (isWallCollide and "left" in positionBetweenWall):
                 if isDoorCollide and "left" in positionBetweeDoor:
                     pass
                 else:
                     return
+            self.isMoving = True
+
             self.walkLeft()
+            self.angle = math.pi
+
         if key[pygame.K_s]:
             if (isWallCollide and "below" in positionBetweenWall):
                 if isDoorCollide and "below" in positionBetweeDoor:
                     pass
                 else:
                     return
+            self.isMoving = True
             self.walkDown()
+            self.angle = math.pi / 2
         if key[pygame.K_d]:
+
             if (isWallCollide and "right" in positionBetweenWall):
                 if isDoorCollide and "right" in positionBetweeDoor:
                     pass
                 else:
                     return
+
+            self.isMoving = True
             self.walkRight()
+            self.angle = 0
+
+        if (self.firestatus == 0.0):
+            
+            if key[self.firekey]:
+                self.firestatus = Katya.recoiltime # seconds until Katya can fire again
+                Bullet(self,game.sprites)
+        self.firestatus -= 0.1
+        if self.firestatus < 0.0:
+            self.firestatus = 0
+
+        self.isMoving = False
+        
 
 class Player2(Player):
     def __init__(self, *groups):
@@ -119,11 +160,10 @@ class Player2(Player):
             self.images[DOWN].append(pygame.image.load('pics/player1/down'+str(i)+'.png'))
             self.images[RIGHT].append(pygame.image.load('pics/player1/right'+str(i)+'.png'))
         self.image = self.images[DOWN][0]
-        self.has_key = False
 
     def update(self,dt,game):
         key = pygame.key.get_pressed()
-        
+
         isPlayerCollide = self.rect.colliderect(game.player1.rect)
         positionBetween = checkPostionBetweenRect(game.player1.rect,self.rect)
 
@@ -178,7 +218,6 @@ class Player2(Player):
             game.sprites.remove(game.key)
             
     
-
 
     
     

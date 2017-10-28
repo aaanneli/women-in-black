@@ -13,7 +13,7 @@ class MainGame():
         self.isPlaying = True
         self.clock = pygame.time.Clock()
         self.sprites = pygame.sprite.Group()
-        self.player1 = Player1(self.sprites)
+        self.player1 = Katya(self.sprites)
         self.player2 = Player2(self.sprites)
         self.key = Key(self.sprites)
         self.rooms = []
