@@ -16,3 +16,6 @@ class Key(pygame.sprite.Sprite):
         self.x = random.randint((room.topLeft[1]*TILE_WIDTH)+15, (room.bottomRight[1]* TILE_WIDTH)-15)
         self.y = random.randint((room.topLeft[0]*TILE_HEIGHT)+15, (room.bottomRight[0]*TILE_HEIGHT)-15)
         self.room = room
+        self.width = 50
+        self.height = 30
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
