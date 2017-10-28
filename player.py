@@ -76,7 +76,6 @@ class Katya(Player):
 
         self.firekey = Katya.firekey
         self.firestatus = 0.0
-        self.rect = pygame.Rect(self.x,self.y,60,60)
 
     def update(self,dt,game):
         key = pygame.key.get_pressed()

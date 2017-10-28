@@ -18,8 +18,8 @@ class Alien(pygame.sprite.Sprite):
         self.image = self.images[self.direction][self.index]
         self.x = x
         self.y = y
-        self.width = 20
-        self.height = 40
+        self.width = ALIEN_WIDTH
+        self.height = ALIEN_HEIGHT
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.countStep = 0
 

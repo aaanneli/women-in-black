@@ -56,9 +56,9 @@ class MainGame():
         self.startRoom.hidden = False
         
         
-        for i in range(10):
-            self.aliens.append(Alien(r.randint(0,SCREEN_WIDTH),\
-                                     r.randint(0,SCREEN_HEIGHT),self.sprites))
+        for i in range(NUMBER_OF_ALIENS):
+            self.aliens.append(Alien(r.randint(150,SCREEN_WIDTH),\
+                                     r.randint(150,SCREEN_HEIGHT),self.sprites))
 
         while self.isMenu:
             for event in pygame.event.get():
@@ -86,8 +86,6 @@ class MainGame():
             self.sprites.update(dt/1000., self)           
             self.sprites.draw(self.screen)
             self.drawMaze(rooms, doors)
-
-
             if self.isWin:
                 self.portal = pygame.Rect(self.endRoom.rect.center[0] - TILE_WIDTH/4.0, self.endRoom.rect.center[1] - TILE_HEIGHT/4.0, TILE_WIDTH/2.0, TILE_HEIGHT/2.0)
                 pygame.draw.rect(self.screen, BLUE, self.portal)
@@ -136,8 +134,6 @@ class MainGame():
         tile_height = SCREEN_HEIGHT*1.0/NUM_GRID_ROWS
 
         for room in rooms:
-            if room.hidden:
-                print "Hidden room"
             w = 0 if room.hidden else WALL_WIDTH
             x = room.topLeft[1]*tile_width
             y = room.topLeft[0]*tile_height
