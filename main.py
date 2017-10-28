@@ -16,6 +16,7 @@ class MainGame():
         self.player1 = Katya(self.sprites)
         self.player2 = Player2(self.sprites)
         self.keys = [] #Key(self.sprites)
+
         self.rooms = []
         self.walls = []
         self.doors = []
@@ -31,12 +32,21 @@ class MainGame():
         rooms, doors = maze.createMaze()
         rooms = sorted(rooms, key = lambda x: x.topLeft)
         self.rooms = rooms
+
+        self.startRoom = rooms[0];
+        endRoomIndex = randint(math.floor(3.0*NUM_ROOMS/4), NUM_ROOMS-1);
+
+        
+        self.endRoom = rooms[endRoomIndex]
+        
         for room in rooms:
             self.walls += room.walls
             self.keys += [Key(room, self.sprites)]
         for door in doors:
             self.doors.append(door)
-        rooms[0].hidden = False
+
+            
+        self.startRoom.hidden = False
         # need to remove later
         for i in range(len(rooms)):
             rooms[i].hidden = False
@@ -53,7 +63,8 @@ class MainGame():
             screen.fill(WHITE)
             self.sprites.draw(self.screen)
             self.drawMaze(rooms, doors)
-
+            portal = pygame.Rect(self.endRoom.rect.center[0] - TILE_WIDTH/4.0, self.endRoom.rect.center[1] - TILE_HEIGHT/4.0, TILE_WIDTH/2.0, TILE_HEIGHT/2.0)
+            pygame.draw.rect(self.screen, BLUE, portal)
             pygame.display.flip()
 
      
@@ -62,16 +73,17 @@ class MainGame():
         tile_height = SCREEN_HEIGHT*1.0/NUM_GRID_ROWS
 
         for room in rooms:
+            if room.hidden:
+                print "Hidden room"
             w = 0 if room.hidden else WALL_WIDTH
             x = room.topLeft[1]*tile_width
             y = room.topLeft[0]*tile_height
             pygame.draw.rect(screen, BLACK, pygame.Rect(x, y, room.width*tile_width, room.height*tile_height), w)
 
         for door in doors:
-            '''
             if door.room1.hidden and door.room2.hidden:
               continue
-            '''
+            
             colour = GREEN if door.open else RED
             x = door.col*tile_width
             y = door.row*tile_height

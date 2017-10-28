@@ -77,5 +77,4 @@ class Alien(pygame.sprite.Sprite):
                 else:
                     self.walkUp()
         if self.rect.colliderect(player1):
-            print('collide',checkPostionBetweenRect(self.rect,game.player1.rect))
-        
+            pass        

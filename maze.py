@@ -43,7 +43,7 @@ class Room:
       self.hidden = True
       self.width = bottomRight[1] - topLeft[1] 
       self.height = bottomRight[0] - topLeft[0]
-      self.rect = pygame.Rect(self.topLeft,(self.width,self.height))
+      self.rect = pygame.Rect((self.topLeft[1]*TILE_WIDTH, self.topLeft[0]*TILE_HEIGHT), (self.width*TILE_WIDTH, self.height*TILE_HEIGHT))
       self.walls = []
       #top walls
       self.walls.append(pygame.Rect(self.topLeft[1] * TILE_WIDTH, self.topLeft[0] * TILE_HEIGHT ,self.width * TILE_WIDTH, WALL_WIDTH))
@@ -53,7 +53,8 @@ class Room:
       self.walls.append(pygame.Rect(self.topLeft[1] * TILE_WIDTH, self.topLeft[0] * TILE_HEIGHT, WALL_WIDTH, self.height * TILE_WIDTH))
       #Right Walls
       self.walls.append(pygame.Rect((self.topLeft[1] + self.width) * TILE_WIDTH - WALL_WIDTH, self.topLeft[0] * TILE_HEIGHT, WALL_WIDTH, self.height * WALL_WIDTH))
-
+           
+       
       
    def unhide(self):
       self.hidden = False
@@ -101,6 +102,11 @@ class Maze:
                room1, room2, door = self.createVerticalWall(room)
                rooms.put(room1)
                rooms.put(room2)
+               for d in doors:
+                  if d.room1 == room:
+                     d.room1 = room1
+                  if d.room2 == room:
+                     d.room2 = room2
                doors += [door]
          else:
             if room.height <= 3:
@@ -109,9 +115,14 @@ class Maze:
                room1, room2, door = self.createHorizontalWall(room)
                rooms.put(room1)
                rooms.put(room2)
+               for d in doors:
+                  if d.room1 == room:
+                     d.room1 = room1
+                  if d.room2 == room:
+                     d.room2 = room2
                doors += [door]
                
-            i += 1
+         i += 1
 
       return list(rooms.queue), doors
 

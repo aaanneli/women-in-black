@@ -19,6 +19,7 @@ class Player(pygame.sprite.Sprite):
         self.height = 60
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.isMoving = False
+        self.hasKey = False
 
     def update(self,dt,game):
         pass
@@ -215,11 +216,7 @@ class Player2(Player):
                 else:
                     return
             self.walkRight()
-            
-##        if isKeyCollide and not self.has_key:
-##            self.has_key = True
-##            game.sprites.remove(game.key)
-            
+
 
         
 
