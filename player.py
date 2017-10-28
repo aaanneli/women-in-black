@@ -65,11 +65,11 @@ class Katya(Player):
         self.pos = [self.x,self.y]
         self.angle = 0
         
-        for i in range(9):
-            self.images[UP].append(pygame.image.load('pics/player1/up'+str(i)+'.png'))
-            self.images[LEFT].append(pygame.image.load('pics/player1/left'+str(i)+'.png'))
-            self.images[DOWN].append(pygame.image.load('pics/player1/down'+str(i)+'.png'))
-            self.images[RIGHT].append(pygame.image.load('pics/player1/right'+str(i)+'.png'))
+        for i in range(3):
+            self.images[UP].append(pygame.image.load('pics/character_2/up'+str(i)+'.png'))
+            self.images[LEFT].append(pygame.image.load('pics/character_2/left'+str(i)+'.png'))
+            self.images[DOWN].append(pygame.image.load('pics/character_2/down'+str(i)+'.png'))
+            self.images[RIGHT].append(pygame.image.load('pics/character_2/right'+str(i)+'.png'))
         self.image = self.images[DOWN][0]
 
         self.firekey = Katya.firekey
@@ -154,11 +154,11 @@ class Katya(Player):
 class Player2(Player):
     def __init__(self, *groups):
         super(Player2, self).__init__(20,20,*groups)
-        for i in range(9):
-            self.images[UP].append(pygame.image.load('pics/player1/up'+str(i)+'.png'))
-            self.images[LEFT].append(pygame.image.load('pics/player1/left'+str(i)+'.png'))
-            self.images[DOWN].append(pygame.image.load('pics/player1/down'+str(i)+'.png'))
-            self.images[RIGHT].append(pygame.image.load('pics/player1/right'+str(i)+'.png'))
+        for i in range(3):
+            self.images[UP].append(pygame.image.load('pics/character_1/up'+str(i)+'.png'))
+            self.images[LEFT].append(pygame.image.load('pics/character_1/left'+str(i)+'.png'))
+            self.images[DOWN].append(pygame.image.load('pics/character_1/down'+str(i)+'.png'))
+            self.images[RIGHT].append(pygame.image.load('pics/character_1/right'+str(i)+'.png'))
         self.image = self.images[DOWN][0]
         self.has_key = False
 
