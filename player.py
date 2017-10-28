@@ -59,7 +59,7 @@ class Katya(Player):
     
     def __init__(self, *groups):
 
-        super(Katya, self).__init__(100,100,*groups)
+        super(Katya, self).__init__(10,10,*groups)
 
         self.pos = [self.x,self.y]
         self.angle = 0
@@ -86,7 +86,7 @@ class Katya(Player):
         for wall in game.walls:
             if self.rect.colliderect(wall):
                 isWallCollide = True
-                positionBetweenWall += checkPostionBetweenRect(wall,self.rect)
+                positionBetweenWall += checkPositionBetweenWall(wall,self.rect)
                 break
 
         isDoorCollide = False
@@ -95,7 +95,7 @@ class Katya(Player):
             if self.rect.colliderect(door.rect):
                 if (door.open):
                     isDoorCollide = True
-                    positionBetweeDoor += checkPostionBetweenRect(door.rect,self.rect)
+                    positionBetweeDoor += checkPositionBetweenWall(door.rect,self.rect)
                     break
         if key[pygame.K_w]:
             if (isWallCollide and "top" in positionBetweenWall):
@@ -160,6 +160,7 @@ class Player2(Player):
             self.images[DOWN].append(pygame.image.load('pics/player1/down'+str(i)+'.png'))
             self.images[RIGHT].append(pygame.image.load('pics/player1/right'+str(i)+'.png'))
         self.image = self.images[DOWN][0]
+        self.hasKey = False
 
     def update(self,dt,game):
         key = pygame.key.get_pressed()
@@ -172,7 +173,7 @@ class Player2(Player):
         for wall in game.walls:
             if self.rect.colliderect(wall):
                 isWallCollide = True
-                positionBetweenWall += checkPostionBetweenRect(wall,self.rect)
+                positionBetweenWall += checkPositionBetweenWall(wall,self.rect)
                 break
 
         isDoorCollide = False
@@ -181,7 +182,7 @@ class Player2(Player):
             if self.rect.colliderect(door.rect):
                 if (door.open):
                     isDoorCollide = True
-                    positionBetweeDoor += checkPostionBetweenRect(door.rect,self.rect)
+                    positionBetweeDoor += checkPositionBetweenWall(door.rect,self.rect)
                     break
                 
         if key[pygame.K_UP]:
@@ -217,7 +218,8 @@ class Player2(Player):
             self.has_key = True
             game.sprites.remove(game.key)
             
-    
+
+        
 
     
     

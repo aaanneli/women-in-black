@@ -41,3 +41,19 @@ def checkPostionBetweenRect(rect1,rect2):
     if rect1.center[0] < rect2.center[0]:
         postionString += "left"
     return postionString
+
+def checkPositionBetweenWall(wallRect, player):
+    postionString = ""
+    xDiff = abs(wallRect.center[0] - player.center[0])
+    yDiff = abs(wallRect.center[1] - player.center[1])
+    if yDiff < xDiff:
+        if wallRect.bottom < player.center[1]:
+            postionString += "top"
+        if wallRect.top > player.center[1]:
+            postionString += "below"
+    else:
+        if wallRect.left > player.center[0]:
+            postionString += "right"
+        if wallRect.right < player.center[0]:
+            postionString += "left"
+    return postionString

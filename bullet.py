@@ -85,6 +85,7 @@ class Bullet(pygame.sprite.Sprite):
         if game is not None:
             for alien in game.aliens:
                 if self.rect.colliderect(alien.rect):
+                    game.aliens.remove(alien)
                     game.sprites.remove(alien)
                     self.kill()
         #------- move -------
