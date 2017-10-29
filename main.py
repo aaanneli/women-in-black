@@ -48,7 +48,6 @@ class MainGame():
             self.walls += room.walls
             self.keys += [Key(room, self.sprites)]
             self.roomCenter.append(room.rect.center)
-            print(room.width * room.height)
         for door in doors:
             self.doors.append(door)
 
@@ -165,6 +164,8 @@ class MainGame():
             self.aliens.append(Alien(r.randint(self.roomCenter[index][0] - self.rooms[index].getWidth() // 4, self.roomCenter[index][0] + self.rooms[index].getWidth() // 4),
                                      r.randint(self.roomCenter[index][1] - self.rooms[index].getHeight() // 4, self.roomCenter[index][1] + self.rooms[index].getHeight() // 4),
                                      self.sprites))
+
+    
                                      
           
 

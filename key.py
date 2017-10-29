@@ -13,9 +13,9 @@ class Key(pygame.sprite.Sprite):
     def __init__(self, room, *groups):
         super(Key, self).__init__(*groups)
         self.image = pygame.image.load('pics/key.png')
-        self.x = random.randint((room.topLeft[1]*TILE_WIDTH)+15, (room.bottomRight[1]* TILE_WIDTH)-15)
-        self.y = random.randint((room.topLeft[0]*TILE_HEIGHT)+15, (room.bottomRight[0]*TILE_HEIGHT)-15)
+        self.x = random.randint(room.rect.center[0] - room.getWidth() // 4, room.rect.center[0] + room.getWidth() // 4)
+        self.y = random.randint(room.rect.center[1] - room.getHeight() // 4, room.rect.center[1] + room.getHeight() // 4)
         self.room = room
-        self.width = 50
-        self.height = 30
+        self.width = KEY_WIDTH
+        self.height = KEY_HEIGHT
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
