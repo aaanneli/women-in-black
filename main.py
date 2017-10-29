@@ -118,7 +118,10 @@ class MainGame():
                 endScene = False
             
             screen.fill(color)
-            self.screen.blit(endTextSurface,(SCREEN_WIDTH * 0.33 , SCREEN_HEIGHT * 0.33))
+            if endText == "YOU LOSE!":
+                self.screen.blit(endTextSurface,(SCREEN_WIDTH * 0.28 , SCREEN_HEIGHT * 0.33))
+            else:
+                self.screen.blit(endTextSurface,(SCREEN_WIDTH * 0.28 , SCREEN_HEIGHT * 0.33))
             pygame.display.flip()
             
         pygame.quit()
