@@ -18,13 +18,13 @@ class Door:
       if vertical:
          realX = x - 0.25
          realY = y + DOOR_OFFSET
-         realWidth = DOOR_WIDTH
+         realWidth = DOOR_WIDTH + 0.5
          realHeight = TILE_HEIGHT / 2.0
       else:
          realX = x + DOOR_OFFSET
          realY = y - 0.25
          realWidth = TILE_WIDTH / 2.0
-         realHeight = DOOR_WIDTH
+         realHeight = DOOR_WIDTH + 0.5
       self.rect = pygame.Rect(realX, realY,realWidth,realHeight)
 
 
@@ -75,11 +75,10 @@ class Room:
       
  
 class Maze:
-   def __init__(self, rows, cols, numRooms):
+   def __init__(self, rows, cols):
        self.rooms = []
        self.rows = rows
        self.cols = cols
-       self.numRooms = numRooms
 
 
    def createVerticalWall(self, room):
@@ -105,7 +104,7 @@ class Maze:
 
       i = 0;
       
-      while rooms.qsize() != self.numRooms and i < 1000:
+      while rooms.qsize() != NUM_ROOMS and i < 1000:
          room = rooms.get()
          
          if room.width > room.height:
@@ -128,11 +127,8 @@ class Maze:
          i += 1
 
       self.rooms = list(rooms.queue)
-      for room in self.rooms:
-         print room.topLeft, room.bottomRight
          
       for door in doors:
-         print door.row, door.col
          self.findRooms(door)
          
       return self.rooms, doors

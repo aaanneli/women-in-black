@@ -33,11 +33,12 @@ class MainGame():
         self.bg = pygame.image.load("pics/background.png")              
 
     def main(self):
-        maze = Maze(NUM_GRID_ROWS, NUM_GRID_COLS, NUM_ROOMS)
+        maze = Maze(NUM_GRID_ROWS, NUM_GRID_COLS)
         rooms, doors = maze.createMaze()
         rooms = sorted(rooms, key = lambda x: x.topLeft)
         self.rooms = rooms
 
+        NUM_ROOMS = len(rooms)
         self.startRoom = rooms[0];
         endRoomIndex = randint(0, NUM_ROOMS-1);
 
