@@ -83,3 +83,7 @@ def checkPositionBetweenWall(wallRect, player):
         pass
     '''
     return positionString
+
+def text_objects(text, font):
+    textSurface = font.render(text, True, BLACK)
+    return textSurface, textSurface.get_rect()

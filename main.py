@@ -30,7 +30,10 @@ class MainGame():
         self.aliens = []
         self.roomCenter = []
         self.boss = None
-        self.bg = pygame.image.load("pics/background.png")              
+        self.bg = pygame.image.load("pics/background.png")
+        self.menuBG = pygame.image.load("start_files/bg.png")
+        self.duoPic = pygame.image.load("start_files/duo.png")
+        self.instructionPic = pygame.image.load("start_files/instructions.png")
 
     def main(self):
         maze = Maze(NUM_GRID_ROWS, NUM_GRID_COLS)
@@ -57,6 +60,21 @@ class MainGame():
         self.generateAlien(NUMBER_OF_ALIENS)        
 
         while self.isMenu:
+            self.screen.blit(self.menuBG, (0, 0))
+            self.screen.blit(self.instructionPic, (SCREEN_WIDTH // 2 - 215, 150))
+            self.screen.blit(self.duoPic, (SCREEN_WIDTH // 2 - 33 , 425))
+            titleFont = pygame.font.Font('start_files/LLPIXEL3.ttf', 75)
+            textSurf,TextRect = text_objects("Women in Black", titleFont)
+            TextRect.center = ((SCREEN_WIDTH//2),(50))
+            textSurf = titleFont.render('Women In Black', True,WHITE)
+            self.screen.blit(textSurf, TextRect)
+            titleFont2 = pygame.font.Font('start_files/LLPIXEL3.ttf', 32)
+            textSurf2,TextRect2 = text_objects("Press SPACE to Continue", titleFont2)
+            TextRect2.center = ((SCREEN_WIDTH//2),(525))
+            textSurf2 = titleFont2.render('Press SPACE to Continue', True,WHITE)
+            self.screen.blit(textSurf2, TextRect2)
+
+
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
@@ -65,7 +83,6 @@ class MainGame():
             if key[pygame.K_SPACE]:
                 self.isMenu = False
                 pygame.time.wait(300)
-            screen.fill(BLUE)
             pygame.display.flip()
             
         pygame.mixer.music.load("music/arcade-music.wav")
@@ -118,10 +135,7 @@ class MainGame():
                 endScene = False
             
             screen.fill(color)
-            if endText == "YOU LOSE!":
-                self.screen.blit(endTextSurface,(SCREEN_WIDTH * 0.28 , SCREEN_HEIGHT * 0.33))
-            else:
-                self.screen.blit(endTextSurface,(SCREEN_WIDTH * 0.28 , SCREEN_HEIGHT * 0.33))
+            self.screen.blit(endTextSurface,(SCREEN_WIDTH * 0.33 , SCREEN_HEIGHT * 0.33))
             pygame.display.flip()
             
         pygame.quit()
