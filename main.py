@@ -28,6 +28,7 @@ class MainGame():
         self.walls = []
         self.doors = []
         self.aliens = []
+        self.roomCenter = []
         self.boss = None
         self.bg = pygame.image.load("pics/background.png")              
 
@@ -46,16 +47,15 @@ class MainGame():
         for room in rooms:
             self.walls += room.walls
             self.keys += [Key(room, self.sprites)]
+            self.roomCenter.append(room.rect.center)
+            print(room.width * room.height)
         for door in doors:
             self.doors.append(door)
 
             
         self.startRoom.hidden = False
         
-        
-        for i in range(NUMBER_OF_ALIENS):
-            self.aliens.append(Alien(r.randint(150,SCREEN_WIDTH),\
-                                     r.randint(150,SCREEN_HEIGHT),self.sprites))
+        self.generateAlien()        
 
         while self.isMenu:
             for event in pygame.event.get():
@@ -155,6 +155,17 @@ class MainGame():
               pygame.draw.line(screen, colour, (x, y + offset), (x, y + tile_height - offset), DOOR_WIDTH)
             else:
               pygame.draw.line(screen, colour, (x + tile_width - offset, y), (x + offset, y), DOOR_WIDTH)
+
+    def generateAlien(self):
+        for i in range(NUMBER_OF_ALIENS):
+            size = 0
+            while (size < NUM_GRID_ROWS * NUM_GRID_COLS * 0.25):
+                index = r.randint(1,NUM_ROOMS - 1)
+                size = self.rooms[index].getSize()
+            self.aliens.append(Alien(r.randint(self.roomCenter[index][0] - self.rooms[index].getWidth() // 4, self.roomCenter[index][0] + self.rooms[index].getWidth() // 4),
+                                     r.randint(self.roomCenter[index][1] - self.rooms[index].getHeight() // 4, self.roomCenter[index][1] + self.rooms[index].getHeight() // 4),
+                                     self.sprites))
+                                     
           
 
 if __name__ == '__main__':

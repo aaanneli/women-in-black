@@ -60,6 +60,14 @@ class Room:
    def containsCoordinate(self,x,y):
       return self.topLeft[1] * TILE_WIDTH <= x <= self.bottomRight[1] * TILE_WIDTH and self.topLeft[0] * TILE_HEIGHT <= y <= self.bottomRight[0] * TILE_HEIGHT 
 
+   def getHeight(self):
+      return self.height * TILE_HEIGHT
+
+   def getWidth(self):
+      return self.width * TILE_WIDTH
+
+   def getSize(self):
+      return self.width * self.height
       
    def unhide(self):
       self.hidden = False
