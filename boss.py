@@ -70,7 +70,7 @@ class Boss(pygame.sprite.Sprite):
                 else:
                     self.walkUp()
             if self.rect.colliderect(game.player1.rect) or self.rect.colliderect(player2):
-                print('collide')#game.isPlaying = False
+                game.isPlaying = False
             pygame.draw.rect(game.screen, GREEN, pygame.Rect((self.rect.x, self.rect.y - 10), (self.width / 3 * self.life, 10)))
         
             

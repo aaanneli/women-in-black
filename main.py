@@ -54,7 +54,7 @@ class MainGame():
             
         self.startRoom.hidden = False
         
-        self.generateAlien()        
+        self.generateAlien(NUMBER_OF_ALIENS)        
 
         while self.isMenu:
             for event in pygame.event.get():
@@ -86,6 +86,8 @@ class MainGame():
             if self.isWinning :
                 self.portal = pygame.Rect(self.endRoom.rect.center[0] - TILE_WIDTH/4.0, self.endRoom.rect.center[1] - TILE_HEIGHT/4.0, TILE_WIDTH/2.0, TILE_HEIGHT/2.0)
                 pygame.draw.rect(self.screen, BLUE, self.portal)
+            if len(self.aliens) < NUMBER_OF_ALIENS * 0.25:
+                self.generateAlien(3)
             pygame.display.flip()
 
         pygame.mixer.music.stop()
@@ -155,10 +157,10 @@ class MainGame():
             else:
               pygame.draw.line(screen, colour, (x + tile_width - offset, y), (x + offset, y), DOOR_WIDTH)
 
-    def generateAlien(self):
-        for i in range(NUMBER_OF_ALIENS):
+    def generateAlien(self, numOfAliens):
+        for i in range(numOfAliens):
             size = 0
-            while (size < NUM_GRID_ROWS * NUM_GRID_COLS * 0.25):
+            while (size < NUM_GRID_ROWS * NUM_GRID_COLS * 0.10):
                 index = r.randint(1,NUM_ROOMS - 1)
                 size = self.rooms[index].getSize()
             self.aliens.append(Alien(r.randint(self.roomCenter[index][0] - self.rooms[index].getWidth() // 4, self.roomCenter[index][0] + self.rooms[index].getWidth() // 4),
