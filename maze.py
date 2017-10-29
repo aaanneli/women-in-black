@@ -5,6 +5,7 @@ from constant import *
 import pygame
 
 
+
 class Door:
    def __init__(self, row, col, vertical, room1, room2):
       self.row = row

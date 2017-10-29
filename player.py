@@ -19,38 +19,75 @@ class Player(pygame.sprite.Sprite):
         self.height = CHARACTER_HEIGHT
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self.isMoving = False
-        self.hasKey = False
+        self.has_key = False
 
     def update(self,dt,game):
         pass
 
-    def walkUp(self):
+    def walkUp(self,game):
         self.direction = UP
-        self.rect.y -= MOVING_INDEX 
+        self.rect.y -= MOVING_INDEX
+        if self.ableToWalkThroughDoor(game):
+            pass
+        elif self.hitWall(game.walls):
+            self.rect.y += MOVING_INDEX
         self.image = self.images[UP][self.index]
         self.index = (self.index + 1) % len(self.images[UP])
 
-    def walkDown(self):
+    def walkDown(self,game):
         self.direction = DOWN
-        self.rect.y += MOVING_INDEX 
+        self.rect.y += MOVING_INDEX
+        if self.ableToWalkThroughDoor(game):
+            pass
+        elif self.hitWall(game.walls):
+            self.rect.y -= MOVING_INDEX
         self.image = self.images[DOWN][self.index]
         self.index = (self.index + 1) % len(self.images[DOWN])
 
 
-    def walkRight(self):
+    def walkRight(self,game):
         self.direction = RIGHT
-        self.rect.x += MOVING_INDEX 
+        self.rect.x += MOVING_INDEX
+        if self.ableToWalkThroughDoor(game):
+            pass
+        elif self.hitWall(game.walls):
+            self.rect.x -= MOVING_INDEX
         self.image = self.images[RIGHT][self.index]
         self.index = (self.index + 1) % len(self.images[RIGHT])
 
-    def walkLeft(self):
+    def walkLeft(self,game):
         self.direction = LEFT
-        self.rect.x -= MOVING_INDEX 
+        self.rect.x -= MOVING_INDEX
+        if self.ableToWalkThroughDoor(game):
+            pass
+        elif self.hitWall(game.walls):
+            self.rect.x += MOVING_INDEX
         self.image = self.images[LEFT][self.index]
         self.index = (self.index + 1) % len(self.images[LEFT])
 
     def useAbility(self):
         pass
+
+    def hitWall(self,wallList):
+        for wall in wallList:
+            if self.rect.colliderect(wall):
+                return True
+        return False
+
+    def ableToWalkThroughDoor(self,game):
+        for door in game.doors:
+            if self.rect.colliderect(door.rect):
+                if door.open:
+                    return True
+                elif not door.open and self.has_key:
+                    door.open = True
+                    door.room1.hidden = False
+                    door.room2.hidden = False
+                    self.has_key = False
+                    game.areWeWinning()
+                    return True
+        return False
+                
 
 
 class Katya(Player):
@@ -58,8 +95,6 @@ class Katya(Player):
     
     recoiltime = 0.75
 
-    
-    
     def __init__(self, *groups):
 
         super(Katya, self).__init__(10,10,*groups)
@@ -78,18 +113,7 @@ class Katya(Player):
         self.firestatus = 0.0
 
     def update(self,dt,game):
-        key = pygame.key.get_pressed()
-        
-        isPlayerCollide = self.rect.colliderect(game.player2.rect)
-        positionBetween = checkPostionBetweenRect(game.player2.rect,self.rect)
-
-        isWallCollide = False
-        positionBetweenWall = ""
-        for wall in game.walls:
-            if self.rect.colliderect(wall):
-                isWallCollide = True
-                positionBetweenWall += checkPositionBetweenWall(wall,self.rect)
-                
+        key = pygame.key.get_pressed()    
 
         isDoorCollide = False
         positionBetweeDoor = ""
@@ -98,46 +122,30 @@ class Katya(Player):
                 if (door.open):
                     isDoorCollide = True
                     positionBetweeDoor += checkPostionBetweenRect(door.rect,self.rect)
-        if key[pygame.K_w]:
-            if (isWallCollide and "top" in positionBetweenWall):
-                if isDoorCollide and "top" in positionBetweeDoor or "below" in positionBetweeDoor:
-                    pass
-                else:
-                    return
+
+      
         if key[pygame.K_w]:
             self.isMoving = True
-            self.walkUp()
+            self.walkUp(game)
             self.angle = math.pi * 3 / 2
         if key[pygame.K_a]:
-            if (isWallCollide and "left" in positionBetweenWall):
-                if isDoorCollide and "left" in positionBetweeDoor:
-                    pass
-                else:
-                    return
+            
             self.isMoving = True
 
-            self.walkLeft()
+            self.walkLeft(game)
             self.angle = math.pi
 
         if key[pygame.K_s]:
-            if (isWallCollide and "below" in positionBetweenWall):
-                if isDoorCollide and "below" in positionBetweeDoor:
-                    pass
-                else:
-                    return
+            
             self.isMoving = True
-            self.walkDown()
+            self.walkDown(game)
             self.angle = math.pi / 2
         if key[pygame.K_d]:
 
-            if (isWallCollide and "right" in positionBetweenWall):
-                if isDoorCollide and "right" in positionBetweeDoor:
-                    pass
-                else:
-                    return
+           
 
             self.isMoving = True
-            self.walkRight()
+            self.walkRight(game)
             self.angle = 0
 
         if (self.firestatus == 0.0):
@@ -169,16 +177,6 @@ class Player2(Player):
     def update(self,dt,game):
         key = pygame.key.get_pressed()
 
-        isPlayerCollide = self.rect.colliderect(game.player1.rect)
-        positionBetween = checkPostionBetweenRect(game.player1.rect,self.rect)
-
-        isWallCollide = False
-        positionBetweenWall = ""
-        for wall in game.walls:
-            if self.rect.colliderect(wall):
-                isWallCollide = True
-                positionBetweenWall += checkPositionBetweenWall(wall,self.rect)
-
         isDoorCollide = False
         positionBetweeDoor = ""
         for door in game.doors:
@@ -198,33 +196,13 @@ class Player2(Player):
                     positionBetweeDoor += checkPostionBetweenRect(door.rect,self.rect)
 
         if key[pygame.K_UP]:
-            if (isWallCollide and "top" in positionBetweenWall):
-                if isDoorCollide:
-                    pass
-                else:
-                    return
-            self.walkUp()
+            self.walkUp(game)
         if key[pygame.K_LEFT]:
-            if (isWallCollide and "left" in positionBetweenWall):
-                if isDoorCollide and "left" in positionBetweeDoor :
-                    pass
-                else:
-                    return
-            self.walkLeft()
+            self.walkLeft(game)
         if key[pygame.K_DOWN]:
-            if (isWallCollide and "below" in positionBetweenWall):
-                if isDoorCollide and "below" in positionBetweeDoor:
-                    pass
-                else:
-                    return
-            self.walkDown()
+            self.walkDown(game)
         if key[pygame.K_RIGHT]:
-            if (isWallCollide and "right" in positionBetweenWall):
-                if isDoorCollide and "right" in positionBetweeDoor:
-                    pass
-                else:
-                    return
-            self.walkRight()
+            self.walkRight(game)
 
         if (game.portal is not None):
             if self.rect.colliderect(game.portal):

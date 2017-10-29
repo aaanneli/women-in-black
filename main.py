@@ -42,7 +42,6 @@ class MainGame():
         self.startRoom = rooms[0];
         endRoomIndex = randint(0, NUM_ROOMS-1);
 
-        
         self.endRoom = rooms[endRoomIndex]
         
         for room in rooms:
